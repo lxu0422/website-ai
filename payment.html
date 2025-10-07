@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #ffb3d9 0%, #ffd6e8 30%, #e6f3ff 70%, #b3d9ff 100%);
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 400px;
+            padding: 48px 40px;
+            border: 1px solid rgba(255, 192, 203, 0.3);
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #8B4B8C;
+            margin-bottom: 40px;
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: #8B4B8C;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="number"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #F4C2C2;
+            border-radius: 12px;
+            font-size: 16px;
+            color: #5D4037;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #AD5A7A;
+            box-shadow: 0 0 0 4px rgba(173, 90, 122, 0.1);
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 12px;
+        }
+
+        .payment-method {
+            flex: 1;
+            position: relative;
+        }
+
+        .payment-method input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .payment-method label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 12px;
+            border: 2px solid #F4C2C2;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.9);
+            margin: 0;
+        }
+
+        .payment-method input[type="radio"]:checked + label {
+            border-color: #AD5A7A;
+            background: rgba(255, 182, 193, 0.2);
+        }
+
+        .payment-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .payment-method label span {
+            font-size: 13px;
+            color: #8B4B8C;
+            font-weight: 500;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #AD5A7A, #8B4B8C);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 32px;
+            box-shadow: 0 4px 15px rgba(173, 90, 122, 0.3);
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #B8677A, #956294);
+            box-shadow: 0 6px 20px rgba(173, 90, 122, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 樱花飘落动画 */
+        .sakura {
+            position: fixed;
+            top: -10px;
+            animation: fall linear infinite;
+            pointer-events: none;
+            z-index: 1;
+            font-size: 20px;
+            color: #ffb3d9;
+            opacity: 0.8;
+        }
+
+        .sakura:nth-child(even) {
+            animation-duration: 10s;
+            color: #ffc0cb;
+        }
+
+        .sakura:nth-child(odd) {
+            animation-duration: 8s;
+            color: #ffb6c1;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+                transform: translateY(50vh) rotate(180deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 鲤鱼装饰 */
+        .koi-fish {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 60px;
+            z-index: 5;
+            animation: swim 6s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes swim {
+            0%, 100% {
+                transform: translateX(0) rotate(0deg);
+            }
+            50% {
+                transform: translateX(-20px) rotate(-5deg);
+            }
+        }
+
+        .koi-fish2 {
+            position: fixed;
+            bottom: 60px;
+            left: 30px;
+            font-size: 40px;
+            z-index: 5;
+            animation: swim2 8s ease-in-out infinite reverse;
+            opacity: 0.5;
+        }
+
+        @keyframes swim2 {
+            0%, 100% {
+                transform: translateX(0) rotate(0deg);
+            }
+            50% {
+                transform: translateX(15px) rotate(3deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 樱花飘落效果 -->
+    <div class="sakura" style="left: 10%;">🌸</div>
+    <div class="sakura" style="left: 20%; animation-delay: 1s;">🌸</div>
+    <div class="sakura" style="left: 30%; animation-delay: 2s;">🌺</div>
+    <div class="sakura" style="left: 40%; animation-delay: 0.5s;">🌸</div>
+    <div class="sakura" style="left: 50%; animation-delay: 3s;">🌸</div>
+    <div class="sakura" style="left: 60%; animation-delay: 1.5s;">🌺</div>
+    <div class="sakura" style="left: 70%; animation-delay: 2.5s;">🌸</div>
+    <div class="sakura" style="left: 80%; animation-delay: 0.8s;">🌸</div>
+    <div class="sakura" style="left: 90%; animation-delay: 4s;">🌺</div>
+
+    <!-- 鲤鱼装饰 -->
+    <div class="koi-fish">🐟</div>
+    <div class="koi-fish2">🐠</div>
+
+    <div class="payment-container">
+        <h1>Payment 🌸</h1>
+        <form id="paymentForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+
+            <div class="form-group">
+                <label>Payment Method</label>
+                <div class="payment-methods">
+                    <div class="payment-method">
+                        <input type="radio" id="wechat" name="payment" value="wechat" checked>
+                        <label for="wechat">
+                            <div class="payment-icon">💚</div>
+                            <span>WeChat Pay</span>
+                        </label>
+                    </div>
+                    <div class="payment-method">
+                        <input type="radio" id="alipay" name="payment" value="alipay">
+                        <label for="alipay">
+                            <div class="payment-icon">💙</div>
+                            <span>Alipay</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="amount">Amount (¥)</label>
+                <input type="number" id="amount" name="amount" step="0.01" min="0.01" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Pay Now 🌸</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                paymentMethod: document.querySelector('input[name="payment"]:checked').value,
+                amount: document.getElementById('amount').value
+            };
+
+            console.log('Payment submitted:', formData);
+            alert(`Payment of ¥${formData.amount} via ${formData.paymentMethod === 'wechat' ? 'WeChat Pay' : 'Alipay'} has been initiated.`);
+        });
+    </script>
+</body>
+</html>
